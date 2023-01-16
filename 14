@@ -1,0 +1,79 @@
+class DaftarPengunjung :
+    _DAFTAR = []
+
+# SRP : 1 class 1 func
+from abc import ABC, abstractmethod
+
+class Absensi(ABC) :
+    @abstractmethod
+    def cetak() : pass
+
+class NIM(Absensi) :
+    def cetak(data) :
+        print(f"NIM           : {data.nim}")
+
+class NIP(Absensi) :
+    def cetak(data) :
+        print(f"NIP           : {data.nip}")
+
+class Nama(Absensi) :
+    def cetak(data) :
+        print(f"Nama          : {data.nama}")
+
+class Prodi(Absensi) :
+    def cetak(data) :
+        print(f"Prodi         : {data.prodi}")
+
+class Jabatan(Absensi) :
+    def cetak(data) :
+        print(f"Jabatan       : {data.jabatan}")
+
+class JenisKelamin(Absensi) :
+    def cetak(data) :
+        print(f"Jenis Kelamin : {data.gender}")
+
+class NoHp(Absensi) :
+    def cetak(data) :
+        print(f"No Hp         : {data.noHp}")
+
+class Mahasiswa (DaftarPengunjung) :
+    def __init__(self, nim, nama, prodi, gender, noHp) :
+        self.nim = nim
+        self.nama = nama
+        self.prodi = prodi
+        self.gender = gender
+        self.noHp = noHp
+        DaftarPengunjung.__init__(self)
+        self._DAFTAR.append(self)
+
+class Dosen (DaftarPengunjung) :
+    def __init__(self, nip, nama, jabatan, gender, noHp) :
+        self.nip = nip
+        self.nama = nama
+        self.jabatan = jabatan
+        self.gender = gender
+        self.noHp = noHp
+        DaftarPengunjung.__init__(self)
+        self._DAFTAR.append(self)
+
+# data
+mahasiswa1 = Mahasiswa("21111213", "Tere", "IF", "Perempuan", "08159889878")
+mahasiswa2 = Mahasiswa("211111109", "Cio", "IF", "Laki-laki", "08878777788")
+
+dosen1 = Dosen("199710051403", "Indira", "Dosen Tetap", "Perempuan", "08521387898")
+dosen2 = Dosen("199831081403", "Cia", "Dosen Baru", "Perempuan", "0821987878780")
+
+# OCP
+for pengunjung in DaftarPengunjung._DAFTAR :
+    for subclass in Absensi.__subclasses__() :
+        try :
+            subclass.cetak(pengunjung)
+        except :
+            continue
+    print()
+
+print(f"Jumlah Pengunjung : {len(DaftarPengunjung._DAFTAR)} orang")
+
+#Sudah,karena sudah menggunakan konsep SRP karena hanya terdapat 1 fungsi didalam 1 class dan itu merupakan konsep dari SRP 
+# Dan sudah terdapat OCP  karena memanggil fungsi bawaan yaitu subclasses yang berfungsi untuk memanggil semua kelas bawaan 
+# dari class Absensi dan fungsi cetak.
